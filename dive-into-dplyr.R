@@ -1,14 +1,11 @@
-# Dive into dpylr workshop
+# Dive into dplyr workshop scipt
 
 #Load libraries
 library(dplyr)
-library(tabplot)
 
 #Explore iris
 head(iris)
 pairs(iris)
-tableplot(iris)
-tableplot(iris, sortCol = Species)
 str(iris)
 summary(iris)
 
@@ -17,6 +14,7 @@ summary(iris)
 select(iris, 1:3)
 select(iris, Petal.Width, Petal.Length)
 select(iris, contains("Sepal"))
+select(iris, starts_with("Sepal"))
 select(iris, -Species)
 
 
@@ -26,15 +24,15 @@ arrange(iris, desc(Petal.Width))
 arrange(iris, Petal.Width, Petal.Length)
 
 
-#Ex3
+#Ex3 Filter
 filter(iris, Petal.Width > 1)
 filter(iris, Petal.Width > 1 & Species == "versicolor")
-filter(iris, Petal.Width > 1, Species == "versicolor")
+filter(iris, Petal.Width > 1, Species == "versicolor") #the comma is a shorthand for &
 filter(iris, !Species == "setosa")
 
 
-# Showing how magrittr works (Rene Magritte This is not a pipe)
-#Ways I would have done before- nesting or multiple variables
+# Magrittr Example (Rene Magritte This is not a pipe)
+# Ways I would have done before- nesting or multiple variables
 data1 <- filter(iris, Petal.Width > 1)
 data2 <- select(data1, Species, Petal.Length)
 
@@ -47,16 +45,28 @@ iris %>%
   filter(Petal.Width > 1) %>%
   select(Species, Petal.Length)
 
+#using the . to specify where the incoming variable will be piped to
+iris %>%
+  myFunction(arg1, arg2 = .)
 
+iris %>%
+  filter( ., Species == "setosa")
 
 #Ex4 magrittr
+
+# shortcut to make the %>%
+# ctl shift m
+# shortcut to make the <-
+#alt -
+
 iris %>%
   filter(Petal.Width > 1) %>%
   select(1:3)
 
 iris %>%
   select(contains("Petal")) %>%
-  arrange(Petal.Width)
+  arrange(Petal.Width) %>%
+  head()
 
 iris %>%
   filter(Species == "setosa") %>%
@@ -71,7 +81,12 @@ iris %>%
   select(Petal.Width) %>%
   unique()
 
-#Ex5 mutate
+# a second way to get the unique values
+iris %>%
+  filter(Species == "setosa") %>%
+  distinct(Petal.Width)
+
+#Ex5 Mutate
 iris %>%
   mutate(pwGreaterThanPL = Petal.Width > Petal.Length) %>%
   head()
@@ -81,7 +96,7 @@ iris %>%
   head()
 
 iris %>%
-  mutate(meanSL = mean(Sepal.Length),
+  mutate(meanSL = mean(Sepal.Length, na.rm = TRUE),
          greaterThanMeanSL = ifelse(Sepal.Length > meanSL, 1, 0)) %>%
   head()
          
@@ -96,7 +111,7 @@ iris %>%
   head()
 
 
-#Ex6 Group_by and summarise
+#Ex6 Group_by and Summarise
 iris %>%
   summarise(plMean = mean(Petal.Length),
             pwSD = sd(Petal.Width))
@@ -136,11 +151,7 @@ iris %>%
 
 #Scoped verbs
 
-
 #Summarise_all
-iris %>%
-  summarise_all(length)
-
 iris %>%
   select(1:4) %>%
   summarise_all(mean)
@@ -158,7 +169,7 @@ iris %>%
   summarise_at(vars(-Species), mean)
 
 iris %>%
-  summarise_at(vars(contains("Petal")), mean)
+  summarise_at(vars(contains("Petal")), funs(mean, min))
 
 #summarise_if
 iris %>%
@@ -180,12 +191,3 @@ airquality %>%
 
 airquality %>%
   filter_all(all_vars(is.na(.)))
-
-
-
-#Links
-#https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html
-#https://docs.google.com/presentation/d/1tgCEXQVVPO6jyJcG1luzgt9gu6I_ZSDeYDmzasvZ2-s/edit#slide=id.g35f391192_00
-#https://dcl-2017-04.github.io/curriculum/manip-scoped.html
-#dive into dplyr
-#https://docs.google.com/presentation/d/1ykHUxYVXtEhAuMX95gX_5x1zVlZYI_1z4I4_uB4f3gw/edit#slide=id.g35f391192_00
