@@ -6,6 +6,7 @@ This is a hands-on workshop that takes 1.5-2 hours.
 The material is heavily taken from R-Ladies Austin's R4DS dplyr sessions and also from Hadley Wickham's scoped variables tutorial.
 
 https://github.com/rladiesaustin/R4DS_workshop_series
+
 https://dcl-2017-04.github.io/curriculum/manip-scoped.html
 
 # Blurb for the sessions:
