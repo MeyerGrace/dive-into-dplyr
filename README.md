@@ -8,7 +8,7 @@ The material is heavily taken from R-Ladies Austin's R4DS dplyr sessions and als
 https://github.com/rladiesaustin/R4DS_workshop_series
 https://dcl-2017-04.github.io/curriculum/manip-scoped.html
 
-#Blurb for the sessions:
+# Blurb for the sessions:
 
 ### Dive into dplyr
 
